@@ -94,7 +94,7 @@ if platform == "Linux-4.19.76-linuxkit-x86_64-with-glibc2.2.5":
     DATABASES = { 
         'default' : {
             'ENGINE' : 'django.db.backends.mysql',
-            'HOST' : '192.10.0.2',
+            'HOST' : '10.5.0.2',
             'OPTIONS' : {
                 'read_default_file' : os.path.join(PROJECT_ROOT, './secure/mysql.cnf'),
                 'init_command' : "SET sql_mode='STRICT_TRANS_TABLES'",
