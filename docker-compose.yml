@@ -21,7 +21,8 @@ services:
         depends_on:
             - cloud-sql-proxy
         networks:
-            - syu_clubs
+            syu_clubs:
+                ipv4_address: 192.10.0.3
 
     cloud-sql-proxy:
         image: gcr.io/cloudsql-docker/gce-proxy:1.11
@@ -31,9 +32,12 @@ services:
         ports: 
             - 5000:5000
         networks:
-            - syu_clubs
-
+            syu_clubs:
+                ipv4_address: 192.10.0.2
 
 networks:
     syu_clubs:
         driver: bridge
+        ipam:
+            config:
+              - subnet: 192.10.0.0/16
