@@ -87,17 +87,31 @@ WSGI_APPLICATION = 'syu_clubs_api_server.wsgi.application'
 #         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #     }
 # }
+import platform
 
-DATABASES = { 
-    'default' : {
-        'ENGINE' : 'django.db.backends.mysql',
-        'HOST' : '127.0.0.1',
-        'OPTIONS' : {
-            'read_default_file' : os.path.join(PROJECT_ROOT, 'mysql.cnf'),
-            'init_command' : "SET sql_mode='STRICT_TRANS_TABLES'",
+platform = platform.platform()
+if platform == "Linux-4.19.76-linuxkit-x86_64-with-glibc2.2.5":
+    DATABASES = { 
+        'default' : {
+            'ENGINE' : 'django.db.backends.mysql',
+            'HOST' : '172.21.0.2',
+            'OPTIONS' : {
+                'read_default_file' : os.path.join(PROJECT_ROOT, 'mysql.cnf'),
+                'init_command' : "SET sql_mode='STRICT_TRANS_TABLES'",
+            }
         }
     }
-}
+else :
+    DATABASES = { 
+        'default' : {
+            'ENGINE' : 'django.db.backends.mysql',
+            'HOST' : '127.0.0.1',
+            'OPTIONS' : {
+                'read_default_file' : os.path.join(PROJECT_ROOT, 'mysql.cnf'),
+                'init_command' : "SET sql_mode='STRICT_TRANS_TABLES'",
+            }
+        }
+    }
 
 
 

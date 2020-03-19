@@ -4,7 +4,7 @@
 
 ### SECURE & CREDENTIAL ###
 *.cnf
-
+secure
 
 ### Django ###
 /clubs/__pycache__/

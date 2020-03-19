@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+    app:
+        container_name: syu_clubs
+        build:
+            context: .
+            dockerfile: ./develop/Dockerfile-dev
+        ports:
+            - 8000:8000
+        command:
+            - bash
+            - -c
+            - |
+                ls
+                python manage.py migrate
+                python manage.py runserver 0:8000
+        restart: on-failure
+        volumes:
+            - ./:/app/
+        depends_on:
+            - cloud-sql-proxy
+        networks:
+            - syu_clubs
+
+    cloud-sql-proxy:
+        image: gcr.io/cloudsql-docker/gce-proxy:1.11
+        command: /cloud_sql_proxy -instances=syu-clubs:asia-northeast3:syu-clubs-db=tcp:0.0.0.0:5000 -credential_file=app/config/secure/syuClubs-secure.json
+        volumes: 
+            - ./:/app/config/
+        ports: 
+            - 5000:5000
+        networks:
+            - syu_clubs
+
+
+networks:
+    syu_clubs:
+        driver: bridge
