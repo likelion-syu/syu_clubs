@@ -11,4 +11,6 @@ RUN    pip install -r requirements.txt
 ADD    ./djangosample   /app/djangosample/
 ADD    ./manage.py      /app/
 
+RUN python manage.py migrate
+
 CMD ["python", "manage.py", "runserver", "0:8000"]

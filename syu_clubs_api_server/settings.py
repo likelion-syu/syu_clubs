@@ -96,7 +96,7 @@ if platform == "Linux-4.19.76-linuxkit-x86_64-with-glibc2.2.5":
             'ENGINE' : 'django.db.backends.mysql',
             'HOST' : '172.21.0.2',
             'OPTIONS' : {
-                'read_default_file' : os.path.join(PROJECT_ROOT, 'mysql.cnf'),
+                'read_default_file' : os.path.join(PROJECT_ROOT, './secure/mysql.cnf'),
                 'init_command' : "SET sql_mode='STRICT_TRANS_TABLES'",
             }
         }
@@ -107,7 +107,7 @@ else :
             'ENGINE' : 'django.db.backends.mysql',
             'HOST' : '127.0.0.1',
             'OPTIONS' : {
-                'read_default_file' : os.path.join(PROJECT_ROOT, 'mysql.cnf'),
+                'read_default_file' : os.path.join(PROJECT_ROOT, './secure/mysql.cnf'),
                 'init_command' : "SET sql_mode='STRICT_TRANS_TABLES'",
             }
         }
