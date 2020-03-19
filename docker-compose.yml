@@ -17,23 +17,27 @@ services:
                 python manage.py runserver 0:8000
         restart: on-failure
         volumes:
-            - .:/usr/app/
+            - ./:/app/
         depends_on:
             - cloud-sql-proxy
         networks:
-            - syu_clubs
+            syu_clubs:
+                ipv4_address: 192.10.0.3
 
     cloud-sql-proxy:
         image: gcr.io/cloudsql-docker/gce-proxy:1.11
-        command: /cloud_sql_proxy -instances=syu-clubs:asia-northeast3:syu-clubs-db=tcp:0.0.0.0:5000 -credential_file=app/secure/syuClubs-secure.json
+        command: /cloud_sql_proxy -instances=syu-clubs:asia-northeast3:syu-clubs-db=tcp:0.0.0.0:5000 -credential_file=app/config/secure/syuClubs-secure.json
         volumes: 
-            - ./:/app/
+            - ./:/app/config
         ports: 
             - 5000:5000
         networks:
-            - syu_clubs
-
+            syu_clubs:
+                ipv4_address: 192.10.0.2
 
 networks:
     syu_clubs:
         driver: bridge
+        ipam:
+            config:
+              - subnet: 192.10.0.0/16
