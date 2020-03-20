@@ -22,7 +22,7 @@ services:
             - cloud-sql-proxy
         networks:
             syu_clubs:
-                ipv4_address: 10.5.0.3
+                ipv4_address: 10.10.0.3
 
     cloud-sql-proxy:
         image: gcr.io/cloudsql-docker/gce-proxy:1.11
@@ -33,11 +33,11 @@ services:
             - 5000:5000
         networks:
             syu_clubs:
-                ipv4_address: 10.5.0.2
+                ipv4_address: 10.10.0.2
 
 networks:
     syu_clubs:
         driver: bridge
         ipam:
             config:
-              - subnet: 10.5.0.0/16
+              - subnet: 10.10.0.0/16
