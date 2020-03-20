@@ -14,13 +14,17 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
+from django.conf.urls import url, include
+from django.views.generic import TemplateView
 
 import posts.urls
 
 urlpatterns = [
+    # 모든 주소를 우선 client 쪽으로 연결 시킴
+    url(r'^$', TemplateView.as_view(template_name='index.html'),name='index'),
     path('admin/', admin.site.urls),
-    path('api/', include('posts.urls')),
-    path('api/', include('clubs.urls')),
-    path('api/', include('user.urls')),
+    path('api/posts', include('posts.urls')),
+    path('api/clubs', include('clubs.urls')),
+    path('api/users', include('user.urls')),
 ]

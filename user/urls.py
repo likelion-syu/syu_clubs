@@ -6,8 +6,8 @@ from rest_framework import routers
 
 router = routers.DefaultRouter()
 
-# router.register('login', views.LoginViewset)
+# router.register('', views.LoginViewset)
 
 urlpatterns = [
-    # path('user/', include(router.urls)),
+    # path('', include(router.urls)),
 ]

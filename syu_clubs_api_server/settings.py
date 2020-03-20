@@ -63,7 +63,8 @@ ROOT_URLCONF = 'syu_clubs_api_server.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        # 템플릿 위치를 client 폴더로 고정 
+        'DIRS': ['client'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -154,7 +155,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-
+STATICFILES_DIRS = [
+    # 실제 static 파일은 모두 client 측에서 소유 
+    os.path.join(PROJECT_ROOT, 'client/static')
+]
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True

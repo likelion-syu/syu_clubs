@@ -6,8 +6,8 @@ from rest_framework import routers
 
 router = routers.DefaultRouter()
 
-router.register('club', views.ClubsViewset)
+router.register('', views.ClubsViewset)
 
 urlpatterns = [
-    path('union/', include(router.urls)),
+    path('', include(router.urls)),
 ]
