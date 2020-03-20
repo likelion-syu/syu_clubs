@@ -6,6 +6,7 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class AuthGroup(models.Model):
@@ -80,10 +81,24 @@ class Categories(models.Model):
     category_desc = models.CharField(max_length=300, blank=True, null=True)
     created_at = models.DateTimeField(blank=True, null=True)
     updated_at = models.DateTimeField(blank=True, null=True)
+    is_visible = models.IntegerField()
 
     class Meta:
         managed = False
         db_table = 'categories'
+
+
+class ClubEvents(models.Model):
+    club_event_id = models.AutoField(primary_key=True)
+    club_event_name = models.CharField(max_length=100, blank=True, null=True)
+    club_event_dt = models.DateTimeField(blank=True, null=True)
+    club = models.ForeignKey('Clubs', models.DO_NOTHING, blank=True, null=True)
+    created_at = models.DateTimeField(blank=True, null=True)
+    updated_at = models.DateTimeField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'club_events'
 
 
 class ClubTypes(models.Model):
@@ -101,13 +116,14 @@ class ClubTypes(models.Model):
 class Clubs(models.Model):
     club_id = models.AutoField(primary_key=True)
     club_name = models.CharField(max_length=200)
+    club_introduce = models.CharField(max_length=200)
     club_desc = models.CharField(max_length=3000)
     user = models.ForeignKey(AuthUser, models.DO_NOTHING)
     club_img_url = models.CharField(max_length=500, blank=True, null=True)
     created_at = models.DateTimeField(blank=True, null=True)
     updated_at = models.DateTimeField(blank=True, null=True)
-    is_central = models.TextField()  # This field type is a guess.
-    is_united = models.TextField()  # This field type is a guess.
+    is_central = models.IntegerField()
+    is_united = models.IntegerField()
     club_type = models.ForeignKey(ClubTypes, models.DO_NOTHING)
 
     class Meta:
@@ -159,6 +175,20 @@ class DjangoSession(models.Model):
         db_table = 'django_session'
 
 
+class Notifications(models.Model):
+    notification_id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(AuthUser, models.DO_NOTHING)
+    notification_content = models.CharField(max_length=1000)
+    notification_type_id = models.IntegerField()
+    read_at = models.DateTimeField(blank=True, null=True)
+    created_at = models.DateTimeField()
+    updated_at = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'notifications'
+
+
 class Posts(models.Model):
     post_id = models.AutoField(primary_key=True)
     post_title = models.CharField(max_length=150)
@@ -169,10 +199,24 @@ class Posts(models.Model):
     category = models.ForeignKey(Categories, models.DO_NOTHING, blank=True, null=True)
     created_at = models.DateTimeField(blank=True, null=True)
     updated_at = models.DateTimeField(blank=True, null=True)
+    is_notice = models.IntegerField()
+    club = models.ForeignKey(Clubs, models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'posts'
+
+
+class RelInterestClubs(models.Model):
+    intrest_club_id = models.AutoField(primary_key=True)
+    club = models.ForeignKey(Clubs, models.DO_NOTHING, blank=True, null=True)
+    user = models.ForeignKey(AuthUser, models.DO_NOTHING, blank=True, null=True)
+    created_at = models.DateTimeField(blank=True, null=True)
+    updated_at = models.DateTimeField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'rel_interest_clubs'
 
 
 class Replies(models.Model):
@@ -183,6 +227,7 @@ class Replies(models.Model):
     reply_content = models.CharField(max_length=1000, blank=True, null=True)
     created_at = models.DateTimeField(blank=True, null=True)
     updated_at = models.DateTimeField(blank=True, null=True)
+    is_deleted = models.IntegerField()
 
     class Meta:
         managed = False

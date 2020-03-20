@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'user',
     'clubs',
     'posts',
+    'common',
 
     'rest_framework',
     'corsheaders',

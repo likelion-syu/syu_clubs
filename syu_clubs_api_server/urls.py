@@ -21,5 +21,6 @@ import posts.urls
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('posts.urls')),
-    path('api/', include('clubs.urls'))
+    path('api/', include('clubs.urls')),
+    path('api/', include('user.urls')),
 ]
