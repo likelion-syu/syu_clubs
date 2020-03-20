@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 PROJECT_ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir)
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
@@ -25,8 +24,33 @@ SECRET_KEY = 'g7nf!xaqekwki@mwa(u5yyqo!z%)0t84&6x)xcv#_owh5(m+=b'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
+from secure import env
+# from . import env
+credential_path = "secure/syuClubs-secure.json"
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credential_path
+
+DEFAULT_FILE_STORAGE = 'syu_clubs_api_server.gcloud.GoogleCloudMediaFileStorage'
+STATICFILES_STORAGE = 'syu_clubs_api_server.gcloud.GoogleCloudStaticFileStorage'
+
+GS_PROJECT_ID = env.MY_PROJECT_ID
+
+GS_STATIC_BUCKET_NAME = env.MY_STATIC
+GS_MEDIA_BUCKET_NAME = env.MY_MEDIA
+
+STATIC_URL = 'https://storage.googleapis.com/{}/'.format(GS_STATIC_BUCKET_NAME)
+
+STATIC_ROOT = "static/"
+GS_ACCESS_KEY_ID= env.MY_ACCESS_ID
+GS_SECRET_ACCESS_KEY = env.MY_SECRET_KEY
+
+MEDIA_URL = 'https://storage.googleapis.com/{}/'.format(GS_MEDIA_BUCKET_NAME)
+
+UPLOAD_ROOT = 'media/uploads/'
+
+DOWNLOAD_ROOT = os.path.join(PROJECT_ROOT, "static/media/downloads")
+DOWNLOAD_URL = STATIC_URL + "media/downloads"
 
 # Application definition
 
@@ -153,12 +177,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-STATIC_URL = '/static/'
+# STATIC_URL = '/static/'
 
-STATICFILES_DIRS = [
-    # 실제 static 파일은 모두 client 측에서 소유 
-    os.path.join(PROJECT_ROOT, 'client/static')
-]
+# STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
+
+# STATICFILES_DIRS = [
+#     # 실제 static 파일은 모두 client 측에서 소유 
+#     os.path.join(PROJECT_ROOT, 'client/static')
+# ]
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True

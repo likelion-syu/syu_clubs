@@ -17,6 +17,8 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url, include
 from django.views.generic import TemplateView
+from django.conf import settings
+from django.conf.urls.static import static
 
 import posts.urls
 
@@ -24,7 +26,9 @@ urlpatterns = [
     # 모든 주소를 우선 client 쪽으로 연결 시킴
     url(r'^$', TemplateView.as_view(template_name='index.html'),name='index'),
     path('admin/', admin.site.urls),
-    path('api/posts', include('posts.urls')),
-    path('api/clubs', include('clubs.urls')),
-    path('api/users', include('user.urls')),
+    path('api/posts/', include('posts.urls')),
+    path('api/clubs/', include('clubs.urls')),
+    path('api/users/', include('user.urls')),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
