@@ -95,7 +95,7 @@ if platform == "Linux-4.19.76-linuxkit-x86_64-with-glibc2.2.5":
     DATABASES = { 
         'default' : {
             'ENGINE' : 'django.db.backends.mysql',
-            'HOST' : '192.10.0.2',
+            'HOST' : '10.10.0.2',
             'OPTIONS' : {
                 'read_default_file' : os.path.join(PROJECT_ROOT, './secure/mysql.cnf'),
                 'init_command' : "SET sql_mode='STRICT_TRANS_TABLES'",
@@ -158,3 +158,6 @@ STATICFILES_DIRS = [
     # 실제 static 파일은 모두 client 측에서 소유 
     os.path.join(PROJECT_ROOT, 'client/static')
 ]
+
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
