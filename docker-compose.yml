@@ -1,4 +1,4 @@
-version: '3'
+version: '2'
 
 services:
     app:
@@ -6,16 +6,12 @@ services:
         build:
             context: .
             dockerfile: ./develop/Dockerfile-dev
-        ports:
-            - 8000:8000
-        command:
-            - bash
-            - c
-            - |
-                gunicorn syu_clubs_api_server.wsgi:application --bind=0.0.0.0:8000 --reload
+        expose:
+            - 8000
+        command: gunicorn syu_clubs_api_server.wsgi:application --bind=0.0.0.0:8000
         restart: on-failure
         volumes:
-            - ./:/app/
+            - .:/app/
         depends_on:
             - cloud-sql-proxy
         networks:
@@ -36,14 +32,15 @@ services:
     nginx:
         image: nginx:latest
         ports:
-            - "80:80"
+            - "8080:80"
         volumes:
-            - ./:/app
+            - .:/app
             - ./config/nginx:/etc/nginx/conf.d
         depends_on:
             - app
         networks:
-            - syu_clubs
+            syu_clubs:
+                ipv4_address: 10.10.0.4
 
 
 networks:
@@ -51,4 +48,5 @@ networks:
         driver: bridge
         ipam:
             config:
-              - subnet: 10.10.0.0/16
+                - subnet: 10.10.0.0/16
+                  gateway: 10.10.0.1
