@@ -10,11 +10,9 @@ services:
             - 8000:8000
         command:
             - bash
-            - -c
+            - c
             - |
-                ls
-                python manage.py migrate
-                python manage.py runserver 0:8000
+                gunicorn syu_clubs_api_server.wsgi:application --bind=0.0.0.0:8000 --reload
         restart: on-failure
         volumes:
             - ./:/app/
@@ -34,6 +32,19 @@ services:
         networks:
             syu_clubs:
                 ipv4_address: 10.10.0.2
+
+    nginx:
+        image: nginx:latest
+        ports:
+            - "80:80"
+        volumes:
+            - ./:/app
+            - ./config/nginx:/etc/nginx/conf.d
+        depends_on:
+            - app
+        networks:
+            - syu_clubs
+
 
 networks:
     syu_clubs:
