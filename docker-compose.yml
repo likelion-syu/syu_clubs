@@ -1,6 +1,7 @@
-version: '3'
+version: "2"
 
 services:
+<<<<<<< HEAD
     app:
         container_name: syu_clubs
         build:
@@ -22,21 +23,58 @@ services:
         networks:
             syu_clubs:
                 ipv4_address: 10.10.0.3
+=======
+  app:
+    container_name: syu_clubs_deploy
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    expose:
+      - 8000
+    command:
+      - bash
+      - -c
+      - |
+        python manage.py migrate
+        gunicorn syu_clubs_api_server.wsgi:application --bind=0.0.0.0:8000
+    restart: on-failure
+    volumes:
+      - .:/app/
+    depends_on:
+      - cloud-sql-proxy
+    networks:
+      syu_clubs:
+        ipv4_address: 10.10.0.3
+>>>>>>> deploy
 
-    cloud-sql-proxy:
-        image: gcr.io/cloudsql-docker/gce-proxy:1.11
-        command: /cloud_sql_proxy -instances=syu-clubs:asia-northeast3:syu-clubs-db=tcp:0.0.0.0:5000 -credential_file=app/config/secure/syuClubs-secure.json
-        volumes: 
-            - ./:/app/config
-        ports: 
-            - 5000:5000
-        networks:
-            syu_clubs:
-                ipv4_address: 10.10.0.2
+  cloud-sql-proxy:
+    image: gcr.io/cloudsql-docker/gce-proxy:1.11
+    command: /cloud_sql_proxy -instances=syu-clubs:asia-northeast3:syu-clubs-db=tcp:0.0.0.0:5000 -credential_file=app/config/secure/syuClubs-secure.json
+    volumes:
+      - ./:/app/config
+    ports:
+      - 5000:5000
+    networks:
+      syu_clubs:
+        ipv4_address: 10.10.0.2
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/app
+      - ./config/nginx:/etc/nginx/conf.d
+    depends_on:
+      - app
+    networks:
+      syu_clubs:
+        ipv4_address: 10.10.0.4
 
 networks:
-    syu_clubs:
-        driver: bridge
-        ipam:
-            config:
-              - subnet: 10.10.0.0/16
+  syu_clubs:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.10.0.0/16
+          gateway: 10.10.0.1
