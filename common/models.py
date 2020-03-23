@@ -100,7 +100,7 @@ class AuthUserUserPermissions(models.Model):
 class AuthtokenToken(models.Model):
     key = models.CharField(primary_key=True, max_length=40)
     created = models.DateTimeField()
-    user = models.ForeignKey(AuthUser, models.DO_NOTHING, unique=True)
+    user = models.OneToOneField(AuthUser, models.DO_NOTHING)
 
     class Meta:
         managed = False
@@ -347,7 +347,7 @@ class SocialaccountSocialtoken(models.Model):
 
 
 class UsersAdditionalInfo(models.Model):
-    user_info = models.ForeignKey(AuthUser, models.DO_NOTHING, primary_key=True)
+    user_info = models.OneToOneField(AuthUser, models.DO_NOTHING)
     token_kakao = models.CharField(max_length=100, blank=True, null=True)
     token_google = models.CharField(max_length=150, blank=True, null=True)
     created_at = models.DateTimeField(blank=True, null=True)
