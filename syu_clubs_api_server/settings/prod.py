@@ -5,6 +5,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
+print("project_root : ",PROJECT_ROOT)
 
 platform = platform.platform()
 if platform == "Linux-4.19.76-linuxkit-x86_64-with-glibc2.2.5":
@@ -32,7 +33,9 @@ else :
 
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(PROJECT_ROOT, "static")
+# STATIC_ROOT = os.path.join(PROD_PROJECT_ROOT,"static")
+STATIC_ROOT = os.path.join(PROJECT_ROOT, "staticfiles")
+# STATIC_ROOT = "/app/static/"
 
 STATICFILES_DIRS = [
     # 실제 static 파일은 모두 client 측에서 소유 
@@ -41,3 +44,6 @@ STATICFILES_DIRS = [
 
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+print("[gomja] project root : ", PROJECT_ROOT)
+print("[gomja] static root : ", STATIC_ROOT)

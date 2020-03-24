@@ -22,9 +22,9 @@ db.sqlite3
 media
 migrations
 
-# ./static
 # autofolio/staticfiles
 staticfiles/
+# static/
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*

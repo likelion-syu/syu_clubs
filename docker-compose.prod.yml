@@ -6,6 +6,7 @@ services:
         build:
             dockerfile: ./Dockerfile
         expose:
+            # 이거랑
             - 8000
         environment: 
             - DJANGO_SETTINGS_MODULE=syu_clubs_api_server.settings.prod
@@ -13,13 +14,14 @@ services:
             - bash
             - -c
             - |
-                python manage.py collectstatic
+                echo yes | python manage.py collectstatic
                 python manage.py migrate
                 gunicorn syu_clubs_api_server.wsgi:application --bind=0.0.0.0:8000
 
     nginx:
         image: nginx:latest
         ports:
+            # 이거 차이 
             - "8000:80"
         volumes:
             - .:/app
