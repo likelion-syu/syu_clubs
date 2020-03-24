@@ -24,7 +24,7 @@ migrations
 
 # autofolio/staticfiles
 staticfiles/
-# static/
+static/
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*

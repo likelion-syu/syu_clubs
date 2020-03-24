@@ -34,7 +34,7 @@ else :
 
 STATIC_URL = '/static/'
 # STATIC_ROOT = os.path.join(PROD_PROJECT_ROOT,"static")
-STATIC_ROOT = os.path.join(PROJECT_ROOT, "staticfiles")
+STATIC_ROOT = os.path.join(PROJECT_ROOT, "static")
 # STATIC_ROOT = "/app/static/"
 
 STATICFILES_DIRS = [
