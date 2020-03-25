@@ -29,6 +29,7 @@ urlpatterns = [
     path('api/posts/', include('posts.urls')),
     path('api/clubs/', include('clubs.urls')),
     path('api/users/', include('user.urls')),
+    path('api/clubs_list/', include('clubs_list.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
