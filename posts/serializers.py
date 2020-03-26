@@ -7,7 +7,9 @@ class PostSerializer(serializers.ModelSerializer):
 	created_at = serializers.ReadOnlyField()
 	updated_at = serializers.ReadOnlyField()
 	user = serializers.ReadOnlyField(source='user.username')
-
+	is_notice = serializers.IntegerField(write_only = True)
+	is_deleted = serializers.IntegerField(write_only = True)
+	
 	class Meta:
 		model = models.Posts
 		fields = '__all__'
