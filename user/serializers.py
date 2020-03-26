@@ -14,6 +14,9 @@ class AuthUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.User
         fields = ['date_joined', 'password', 'is_active', 'is_staff', 'is_superuser', 'username', 'email', 'last_login']
+        extra_kwargs = {
+        'password': {'write_only': True}
+        }
 
     def create(self, validated_data):
         user = models.User.objects.create(
@@ -25,3 +28,4 @@ class AuthUserSerializer(serializers.ModelSerializer):
         user.save()
 
         return user
+    
