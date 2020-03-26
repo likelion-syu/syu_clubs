@@ -9,6 +9,6 @@ WORKDIR /app
 
 COPY . /app/
 
-ADD ./requirements /app/
+ADD ./requirements.txt /app/
 
-RUN    pip install -r develop.txt
+RUN    pip install -r requirements.txt

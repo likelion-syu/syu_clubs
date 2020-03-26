@@ -7,6 +7,8 @@
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models import signals
+from django.dispatch import receiver
 
 
 class AccountEmailaddress(models.Model):
@@ -63,14 +65,14 @@ class AuthPermission(models.Model):
 class AuthUser(models.Model):
     password = models.CharField(max_length=128)
     last_login = models.DateTimeField(blank=True, null=True)
-    is_superuser = models.IntegerField()
+    is_superuser = models.IntegerField(default=0)
     username = models.CharField(unique=True, max_length=150)
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=150)
+    first_name = models.CharField(max_length=30, null=True, blank=True, default='zero')
+    last_name = models.CharField(max_length=150, null=True, blank=True, default='zero')
     email = models.CharField(max_length=254)
-    is_staff = models.IntegerField()
-    is_active = models.IntegerField()
-    date_joined = models.DateTimeField()
+    is_staff = models.IntegerField(default=0)
+    is_active = models.IntegerField(default=1)
+    date_joined = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         managed = False
@@ -347,13 +349,25 @@ class SocialaccountSocialtoken(models.Model):
 
 
 class UsersAdditionalInfo(models.Model):
-    user_info = models.OneToOneField(AuthUser, models.DO_NOTHING)
+    user_info = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     token_kakao = models.CharField(max_length=100, blank=True, null=True)
     token_google = models.CharField(max_length=150, blank=True, null=True)
-    created_at = models.DateTimeField(blank=True, null=True)
-    updated_at = models.DateTimeField(blank=True, null=True)
-    is_verfied = models.TextField()  # This field type is a guess.
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    is_verfied = models.IntegerField(default=0)  # This field type is a guess.
 
     class Meta:
         managed = False
         db_table = 'users_additional_info'
+
+@receiver(signals.post_save, sender=User)
+def create_addtional_user_info(sender, instance, created, **kwargs):
+    if created:
+        UsersAdditionalInfo.objects.create(user_info=instance)
+ 
+# signals.post_save.connect(create_addtional_user_info, sender=AuthUser, weak=False, dispatch_uid='create_addtional_user_info') 
+@receiver(signals.post_save, sender=AuthUser)
+def create_addtional_auth_user_info(sender, instance, created, **kwargs):
+    if created:
+        UsersAdditionalInfo.objects.create(user_info=instance)
+ 
