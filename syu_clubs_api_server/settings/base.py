@@ -64,11 +64,16 @@ INSTALLED_APPS = [
     'clubs',
     'posts',
     'common',
+    'clubs_list',
+    'club_event',
 
     'rest_framework',
     'corsheaders',
+    'django_filters',
 ]
-
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+}
 
 
 MIDDLEWARE = [
