@@ -69,8 +69,13 @@ INSTALLED_APPS = [
     'club_event',
 
     'rest_framework',
+    'rest_framework.authtoken',
     'corsheaders',
     'django_filters',
+
+    'rest_auth.registration',
+    'rest_auth',
+
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -80,7 +85,12 @@ INSTALLED_APPS = [
 ]
 
 REST_FRAMEWORK = {
-    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+    'DEFAULT_AUTHENTICATION_CLASSES':[
+        'rest_framework.authentication.TokenAuthentication',
+        # 'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ]
 }
 
 

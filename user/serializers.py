@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from common import models
+from rest_framework.authtoken.models import Token
 
 
 
@@ -18,14 +19,18 @@ class AuthUserSerializer(serializers.ModelSerializer):
         'password': {'write_only': True}
         }
 
-    def create(self, validated_data):
-        user = models.User.objects.create(
-            username=validated_data['username'],
-            email=validated_data['email'],
-        )
+class InfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.User
+        fields = ['id', 'username', 'email']
 
-        user.set_password(validated_data['password'])
-        user.save()
+class UserSerializer(serializers.ModelSerializer):
+    user_info = InfoSerializer()
+    class Meta:
+        model = models.UsersAdditionalInfo
+        fields = '__all__'
 
-        return user
-    
+class LoginUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.User
+        fields = ['id', 'username', 'email']
