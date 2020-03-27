@@ -73,9 +73,6 @@ INSTALLED_APPS = [
     'corsheaders',
     'django_filters',
 
-    'rest_auth.registration',
-    'rest_auth',
-
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
