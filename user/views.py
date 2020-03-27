@@ -15,7 +15,9 @@ from . import permission
 
 
 # Create your views here.
-# 등록 기능
+
+
+ # 등록 기능
 class RegistGenericView(generics.GenericAPIView):
     serializer_class = serializers.AuthUserSerializer
 
@@ -26,28 +28,22 @@ class RegistGenericView(generics.GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
-        token = Token.objects.create(user=user)
+        token = Token.objects.create(user = user)
         return Response(
             {
                 "user": serializers.LoginUserSerializer(user, context=self.get_serializer_context()).data,
                 "token": token.key,
-            }, status=status.HTTP_201_CREATED
+            }
         )
 
-# 유저 로그인 확인
-
-
+ # 유저 로그인 확인
 class UserAuthAPIView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
-
+    permission_classes=[permissions.IsAuthenticated]
     def get(self, request):
-        users = models.UsersAdditionalInfo.objects.select_related(
-            'user_info').filter(user_info=self.request.user)
+        users = models.UsersAdditionalInfo.objects.select_related('user_info').filter(user_info=self.request.user)
         serializer = serializers.UserSerializer(users, many=True)
         return Response(serializer.data[0])
  # 유저 로그인 기능
-
-
 class LoginAPI(generics.GenericAPIView):
     serializer_class = serializers.LoginUserSerializer
 
@@ -55,10 +51,11 @@ class LoginAPI(generics.GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data
-        token = Token.objects.create(user=user)
+        token, created = Token.objects.get_or_create(user=user)
+
         return Response(
             {
-                "user": serializers.LoginUserSerializer(user, context=self.get_serializer_context()).data,
+                "user": serializers.InfoSerializer(user, context=self.get_serializer_context()).data,
                 "token": token.key,
-            }, status=status.HTTP_200_OK
+            }
         )

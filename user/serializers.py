@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from common import models
 from rest_framework.authtoken.models import Token
+from django.contrib.auth import authenticate
 
 
 
@@ -30,7 +31,16 @@ class UserSerializer(serializers.ModelSerializer):
         model = models.UsersAdditionalInfo
         fields = '__all__'
 
-class LoginUserSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.User
-        fields = ['id', 'username', 'email']
+# class LoginUserSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = models.User
+#         fields = ['id', 'username', 'email']
+class LoginUserSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    password = serializers.CharField()
+
+    def validate(self, data):
+        user = authenticate(**data)
+        if user and user.is_active:
+            return user
+        raise serializers.ValidationError("Unable to log in with provided credentials.")
