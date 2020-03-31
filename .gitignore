@@ -5,7 +5,7 @@
 ### SECURE & CREDENTIAL ###
 *.cnf
 secure
-
+/myvenv/
 ### Django ###
 /clubs/__pycache__/
 /posts/__pycache__/
