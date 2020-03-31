@@ -1,16 +1,14 @@
 FROM python:3
 
-# RUN apt-get update && apt-get -y install \
-#     libpq-dev
+ENV PYTHONUNBUFFERED 0
+
 RUN apt-get -y install \
-libpq-dev
+    libpq-dev
+
 WORKDIR /app
-ADD    ./requirements.txt   /app/
-RUN    pip install -r requirements.txt
 
-ADD    ./djangosample   /app/djangosample/
-ADD    ./manage.py      /app/
+COPY . /app/
 
-RUN python manage.py migrate
+ADD ./requirements /app/
 
-CMD ["python", "manage.py", "runserver", "0:8000"]
+RUN    pip install -r prod.txt
