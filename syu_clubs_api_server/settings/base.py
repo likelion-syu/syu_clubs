@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-PROJECT_ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir)
+PROJECT_ROOT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), os.pardir)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -22,9 +22,7 @@ PROJECT_ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardi
 SECRET_KEY = 'g7nf!xaqekwki@mwa(u5yyqo!z%)0t84&6x)xcv#_owh5(m+=b'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
-ALLOWED_HOSTS = ['*']
 
 from secure import env
 # from . import env
@@ -66,8 +64,13 @@ INSTALLED_APPS = [
     'clubs',
     'posts',
     'common',
+<<<<<<< HEAD:syu_clubs_api_server/settings.py
     'interest_club',
     'club_asks',
+=======
+    'clubs_list',
+    'club_event',
+>>>>>>> 88cd620ddb63bb1a43fe4191690b5b8242d34626:syu_clubs_api_server/settings/base.py
 
     'rest_framework',
     'corsheaders',
@@ -109,7 +112,7 @@ ROOT_URLCONF = 'syu_clubs_api_server.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        # 템플릿 위치를 client 폴더로 고정 
+        # 템플릿 위ㅇ를 client 폴더로 고정 
         'DIRS': ['client'],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -135,31 +138,7 @@ WSGI_APPLICATION = 'syu_clubs_api_server.wsgi.application'
 #         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #     }
 # }
-import platform
 
-platform = platform.platform()
-if platform == "Linux-4.19.76-linuxkit-x86_64-with-glibc2.2.5":
-    DATABASES = { 
-        'default' : {
-            'ENGINE' : 'django.db.backends.mysql',
-            'HOST' : '10.10.0.2',
-            'OPTIONS' : {
-                'read_default_file' : os.path.join(PROJECT_ROOT, './secure/mysql.cnf'),
-                'init_command' : "SET sql_mode='STRICT_TRANS_TABLES'",
-            }
-        }
-    }
-else :
-    DATABASES = { 
-        'default' : {
-            'ENGINE' : 'django.db.backends.mysql',
-            'HOST' : '127.0.0.1',
-            'OPTIONS' : {
-                'read_default_file' : os.path.join(PROJECT_ROOT, './secure/mysql.cnf'),
-                'init_command' : "SET sql_mode='STRICT_TRANS_TABLES'",
-            }
-        }
-    }
 
 
 

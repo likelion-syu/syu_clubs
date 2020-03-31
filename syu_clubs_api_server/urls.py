@@ -30,14 +30,18 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/posts/', include('posts.urls')),
     path('api/clubs/', include('clubs.urls')),
-    path('api/rest-auth/', include('rest_auth.urls')),
-    path('api/rest-auth/registration/', include('rest_auth.registration.urls')),
+
     path('api-auth/', include(rest_framework.urls)), # logout dropdown
 
     path('api/interest-club/', include('interest_club.urls')),
     path('api-token-auth/', obtain_auth_token),
 
     path('api/club-ask/', include('club_asks.urls')),
+
+    path('api/users/', include('user.urls')),
+    path('api/clubs_list/', include('clubs_list.urls')),
+    path('api/club_event/', include('club_event.urls')),
+
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
