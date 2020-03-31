@@ -5,9 +5,15 @@ chardet==3.0.4
 defusedxml==0.6.0
 Django==3.0.4
 django-allauth==0.41.0
+<<<<<<< HEAD
 django-cors-headers==3.2.1
 django-filter==2.2.0
 django-rest-auth==0.9.5
+=======
+django-annoying==0.10.6
+django-cors-headers==3.2.1
+django-filter==2.2.0
+>>>>>>> develop
 django-storages==1.9.1
 djangorestframework==3.11.0
 google-api-core==1.16.0
@@ -32,5 +38,9 @@ rsa==4.0
 six==1.14.0
 sqlparse==0.3.1
 urllib3==1.25.8
+<<<<<<< HEAD
 django-filter==2.2.0
 
+=======
+whitenoise==5.0.1
+>>>>>>> develop

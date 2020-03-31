@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
 
     'user',
     'clubs',
@@ -70,14 +71,18 @@ INSTALLED_APPS = [
     'club_event',
 
     'rest_framework',
+    'rest_framework.authtoken',
     'corsheaders',
     'django_filters',
 
-    'rest_framework.authtoken',
-    'django.contrib.sites',
     'allauth',
     'allauth.account',
+    'allauth.socialaccount',
+
+    'allauth.socialaccount.providers.kakao',
+    'allauth.socialaccount.providers.google',
 ]
+
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -89,6 +94,21 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     )
 }
+
+
+
+# 
+AUTHENTICATION_BACKENDS = (
+
+    # Needed to login by username in Django admin, regardless of 'allauth'
+
+    'django.contrib.auth.backends.ModelBackend',
+
+    # 'allauth' specific authentication methods, such as login by e-mail
+
+    'allauth.account.auth_backends.AuthenticationBackend',
+
+)
 
 
 MIDDLEWARE = [

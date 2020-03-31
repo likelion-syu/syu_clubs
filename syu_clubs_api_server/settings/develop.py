@@ -41,3 +41,16 @@ STATICFILES_DIRS = [
 
 print("[gomja] project root : ", PROJECT_ROOT)
 print("[gomja] static root : ", STATIC_ROOT)
+
+LOGIN_REDIRECT_URL = 'http://127.0.0.1:3000'
+# ACCOUNT_AUTHENTICATION_METHOD = 'email'
+# ACCOUNT_EMAIL_REQUIRED = True
+# ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+# ACCOUNT_EMAIL_CONFIRMATION_HMAC =True
+# ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
+# ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 300
+
+# SOCIALACCOUNT_AUTO_SIGNUP = False
+ACCOUNT_LOGOUT_ON_GET = True
+# EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+# EMAIL_FILE_PATH = os.path.join(PROJECT_ROOT, 'tmp/email')
