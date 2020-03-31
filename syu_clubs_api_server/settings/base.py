@@ -64,13 +64,10 @@ INSTALLED_APPS = [
     'clubs',
     'posts',
     'common',
-<<<<<<< HEAD:syu_clubs_api_server/settings.py
     'interest_club',
     'club_asks',
-=======
     'clubs_list',
     'club_event',
->>>>>>> 88cd620ddb63bb1a43fe4191690b5b8242d34626:syu_clubs_api_server/settings/base.py
 
     'rest_framework',
     'corsheaders',
