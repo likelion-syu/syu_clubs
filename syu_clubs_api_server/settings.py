@@ -66,14 +66,30 @@ INSTALLED_APPS = [
     'clubs',
     'posts',
     'common',
-    'clubs_list',
+    'interest_club',
+    'club_asks',
 
     'rest_framework',
     'corsheaders',
     'django_filters',
+
+    'rest_auth',
+    'rest_framework.authtoken',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'rest_auth.registration',
 ]
 REST_FRAMEWORK = {
-    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    # 인증된 사용자만 접근 가능 // 전역설정
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    )
 }
 
 
@@ -194,3 +210,5 @@ STATICFILES_DIRS = [
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
+
+SITE_ID = 1

@@ -1,3 +1,4 @@
 from django.contrib import admin
+from common.models import RelInterestClubs
 
-# Register your models here.
+admin.site.register(RelInterestClubs)
