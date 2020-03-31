@@ -67,8 +67,8 @@ INSTALLED_APPS = [
     'common',
     'interest_club',
     'club_asks',
-    'clubs_list',
     'club_event',
+    'messages',
 
     'rest_framework',
     'rest_framework.authtoken',
