@@ -29,7 +29,7 @@ class PostDetailViewSet(APIView):
         # filter_fields = ('post_id',)
         return Response(serializer.data)
 
-    def put(self, request, post_id, format=None)
+    def put(self, request, post_id, format=None):
         qs = Posts.objects.get(post_id=post_id)
         serializer = PostSerializer(qs, data=request.data)
         if serializer.is_valid():
@@ -37,10 +37,10 @@ class PostDetailViewSet(APIView):
             return Response(serializer.data)
         return Response("수정할 수 없습니다.")
 
-    def delete(self, request, post_id, format=None)
+    def delete(self, request, post_id, format=None):
         post = Posts.objects.get(post_id=post_id)
         post.delete()
-    return Response("삭제완료")
+        return Response("삭제완료")
     # def perform_create(self, serializer):
     #     serializer.save(user=self.request.user)
 #글 수정기능

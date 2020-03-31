@@ -73,12 +73,10 @@ INSTALLED_APPS = [
     'corsheaders',
     'django_filters',
 
-    'rest_auth',
     'rest_framework.authtoken',
     'django.contrib.sites',
     'allauth',
     'allauth.account',
-    'rest_auth.registration',
 ]
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
