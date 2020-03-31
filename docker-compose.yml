@@ -5,15 +5,6 @@ services:
         container_name: syu_clubs
         build:
             context: .
-            dockerfile: ./develop/Dockerfile-dev
-        ports:
-            - 8000:8000
-        command:
-            - bash
-            - -c
-            - |
-                python manage.py migrate
-                python manage.py runserver 0:8000
         restart: on-failure
         volumes:
             - ./:/app/

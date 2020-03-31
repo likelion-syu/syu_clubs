@@ -28,7 +28,7 @@ class PostDetailViewSet(APIView):
         # filter_fields = ('post_id',)
         return Response(serializer.data)
 
-    def put(self, request, post_id, format=None)
+    def put(self, request, post_id, format=None):
         qs = Posts.objects.get(post_id=post_id)
         serializer = PostSerializer(qs, data=request.data)
         if serializer.is_valid():
@@ -36,7 +36,7 @@ class PostDetailViewSet(APIView):
             return Response(serializer.data)
         return Response("수정할 수 없습니다.")
 
-    def delete(self, request, post_id, format=None)
+    def delete(self, request, post_id, format=None):
         qs = Posts.objects.get(post_id=post_id)
         if request.user == qs.user:
             post.delete()
@@ -61,40 +61,40 @@ class PostDetailViewSet(APIView):
 #         post.save()
 #         return Response("Post edited")
 #공지목록
-class NoticeViewSet(APIView):
-    def get(self, request, id, format=None):
-        queryset = Posts.objects.filter(is_noticed=1)
-        serializer = PostSerializer(queryset, many=True)
-        return Response(serializer.data)
-#댓글
-@api_view(['GET'])
-def comment_list(request):
-    comments = Comment.objects.all()
-    serializer = CommentSerializer(comments, many=True)
-    return Response(serializer.data)
+# class NoticeViewSet(APIView):
+#     def get(self, request, id, format=None):
+#         queryset = Posts.objects.filter(is_noticed=1)
+#         serializer = PostSerializer(queryset, many=True)
+#         return Response(serializer.data)
+# #댓글
+# @api_view(['GET'])
+# def comment_list(request):
+#     comments = Comment.objects.all()
+#     serializer = CommentSerializer(comments, many=True)
+#     return Response(serializer.data)
 
-@api_view(['POST'])
-def comments_create(request, music_pk):
-    print(request.data)
-    serializer = CommentSerializer(data=request.data)
-    if serializer.is_valid(raise_exception=True):
-        serializer.save(music_id=music_pk)
-    return Response(serializer.data)
+# @api_view(['POST'])
+# def comments_create(request, music_pk):
+#     print(request.data)
+#     serializer = CommentSerializer(data=request.data)
+#     if serializer.is_valid(raise_exception=True):
+#         serializer.save(music_id=music_pk)
+#     return Response(serializer.data)
 
-@api_view(['PUT', 'DELETE'])
-def comments_update_and_delete(request, reply_id):
-    comment = get_object_or_404(Comment, pk=reply_id)
-    if request.method == 'PUT':
-        serializer = CommentSerializer(data=request.data, instance=comment)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return Response(serializer.data) #  Response({'message': 'Comment has been updated.'})
-    else:
-        comment.delete()
-        return Response({'message':'Comment has been deleted.'})
+# @api_view(['PUT', 'DELETE'])
+# def comments_update_and_delete(request, reply_id):
+#     comment = get_object_or_404(Comment, pk=reply_id)
+#     if request.method == 'PUT':
+#         serializer = CommentSerializer(data=request.data, instance=comment)
+#         if serializer.is_valid(raise_exception=True):
+#             serializer.save()
+#             return Response(serializer.data) #  Response({'message': 'Comment has been updated.'})
+#     else:
+#         comment.delete()
+#         return Response({'message':'Comment has been deleted.'})
 
-class CommentList(ListCreateAPIView):
-    serializer_class = CommentSerializer
+# class CommentList(ListCreateAPIView):
+#     serializer_class = CommentSerializer
 
-    def get_queryset(self):
-        queryset = Comment.objects.filter(parent=None)
+#     def get_queryset(self):
+#         queryset = Comment.objects.filter(parent=None)

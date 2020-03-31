@@ -6,6 +6,7 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
+from django.conf import settings
 from django.contrib.auth.models import User
 
 
@@ -245,13 +246,13 @@ class Posts(models.Model):
     post_id = models.AutoField(primary_key=True)
     post_title = models.CharField(max_length=150)
     post_content = models.CharField(max_length=3000)
-    post_title_img_url = models.CharField(max_length=1000, blank=True, null=True)
+    post_title_img_url = models.ImageField(blank=True, null=True)
     user = models.ForeignKey(User, models.DO_NOTHING)
     is_deleted = models.IntegerField(default=0, blank=True, null=True)
     is_notice = models.IntegerField(default=0, blank=True, null=True)
     category = models.ForeignKey(Categories, models.DO_NOTHING, blank=True, null=True)
-    created_at = models.DateTimeField(blank=True)
-    updated_at = models.DateTimeField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
     club = models.ForeignKey(Clubs, models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
@@ -272,10 +273,10 @@ class RelClubHashtags(models.Model):
 
 class RelInterestClubs(models.Model):
     intrest_club_id = models.AutoField(primary_key=True)
-    club = models.ForeignKey(Clubs, models.DO_NOTHING, blank=True, null=True)
-    user = models.ForeignKey(AuthUser, models.DO_NOTHING, blank=True, null=True)
-    created_at = models.DateTimeField(blank=True, null=True)
-    updated_at = models.DateTimeField(blank=True, null=True)
+    club = models.ForeignKey(Clubs, models.DO_NOTHING, unique=True)
+    user = models.ForeignKey(User, models.DO_NOTHING)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
 
     class Meta:
         managed = False

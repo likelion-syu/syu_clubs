@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-PROJECT_ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir)
+PROJECT_ROOT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), os.pardir)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
@@ -22,9 +22,7 @@ PROJECT_ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardi
 SECRET_KEY = 'g7nf!xaqekwki@mwa(u5yyqo!z%)0t84&6x)xcv#_owh5(m+=b'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
-ALLOWED_HOSTS = ['*']
 
 from secure import env
 # from . import env
@@ -66,15 +64,32 @@ INSTALLED_APPS = [
     'clubs',
     'posts',
     'common',
+    'interest_club',
+    'club_asks',
     'clubs_list',
     'club_event',
 
     'rest_framework',
     'corsheaders',
     'django_filters',
+
+    'rest_auth',
+    'rest_framework.authtoken',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'rest_auth.registration',
 ]
 REST_FRAMEWORK = {
-    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    # 인증된 사용자만 접근 가능 // 전역설정
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    )
 }
 
 
@@ -94,7 +109,7 @@ ROOT_URLCONF = 'syu_clubs_api_server.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        # 템플릿 위치를 client 폴더로 고정 
+        # 템플릿 위ㅇ를 client 폴더로 고정 
         'DIRS': ['client'],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -120,31 +135,7 @@ WSGI_APPLICATION = 'syu_clubs_api_server.wsgi.application'
 #         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #     }
 # }
-import platform
 
-platform = platform.platform()
-if platform == "Linux-4.19.76-linuxkit-x86_64-with-glibc2.2.5":
-    DATABASES = { 
-        'default' : {
-            'ENGINE' : 'django.db.backends.mysql',
-            'HOST' : '10.10.0.2',
-            'OPTIONS' : {
-                'read_default_file' : os.path.join(PROJECT_ROOT, './secure/mysql.cnf'),
-                'init_command' : "SET sql_mode='STRICT_TRANS_TABLES'",
-            }
-        }
-    }
-else :
-    DATABASES = { 
-        'default' : {
-            'ENGINE' : 'django.db.backends.mysql',
-            'HOST' : '127.0.0.1',
-            'OPTIONS' : {
-                'read_default_file' : os.path.join(PROJECT_ROOT, './secure/mysql.cnf'),
-                'init_command' : "SET sql_mode='STRICT_TRANS_TABLES'",
-            }
-        }
-    }
 
 
 
@@ -195,3 +186,5 @@ STATICFILES_DIRS = [
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
+
+SITE_ID = 1
