@@ -255,8 +255,8 @@ class Hashtags(models.Model):
 
 class Messages(models.Model):
     message_id = models.AutoField(primary_key=True)
-    send_user = models.ForeignKey(User, models.DO_NOTHING, related_name="sender")
-    receive_user = models.ForeignKey(User, models.DO_NOTHING, related_name="receiver")
+    send_user = models.ForeignKey(User, models.DO_NOTHING)
+    receive_user = models.ForeignKey(User, models.DO_NOTHING)
     message_content = models.CharField(max_length=1000)
     read_at = models.DateTimeField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
