@@ -41,6 +41,7 @@ urlpatterns = [
     path('api/users/', include('user.urls')),
     path('api/club_event/', include('club_event.urls')),
     path('accounts/', include('allauth.urls')),
+    path('api/messages', include('messages.urls')),
 ]
 
 
