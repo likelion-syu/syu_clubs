@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-=======
-
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -119,19 +116,19 @@ class Categories(models.Model):
         db_table = 'categories'
 
 
-class ClubAsksClubreplies(models.Model):
-    reply_id = models.AutoField(primary_key=True)
-    reply_content = models.CharField(max_length=1000, blank=True, null=True)
-    created_at = models.DateTimeField(blank=True, null=True)
-    updated_at = models.DateTimeField(blank=True, null=True)
-    is_deleted = models.IntegerField()
-    club = models.ForeignKey('Clubs', models.DO_NOTHING)
-    parent_reply = models.ForeignKey('self', models.DO_NOTHING, blank=True, null=True)
-    user = models.ForeignKey(AuthUser, models.DO_NOTHING)
+# class ClubAsksClubreplies(models.Model):
+#     reply_id = models.AutoField(primary_key=True)
+#     reply_content = models.CharField(max_length=1000, blank=True, null=True)
+#     created_at = models.DateTimeField(blank=True, null=True)
+#     updated_at = models.DateTimeField(blank=True, null=True)
+#     is_deleted = models.IntegerField()
+#     club = models.ForeignKey('Clubs', models.DO_NOTHING)
+#     parent_reply = models.ForeignKey('self', models.DO_NOTHING, blank=True, null=True)
+#     user = models.ForeignKey(AuthUser, models.DO_NOTHING)
 
-    class Meta:
-        managed = False
-        db_table = 'club_asks_clubreplies'
+#     class Meta:
+#         managed = False
+#         db_table = 'club_asks_clubreplies'
 
 
 class ClubEvents(models.Model):
@@ -147,19 +144,19 @@ class ClubEvents(models.Model):
         db_table = 'club_events'
 
 
-class ClubReplies(models.Model):
-    reply_id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(AuthUser, models.DO_NOTHING, blank=True, null=True)
-    parent_reply_id = models.IntegerField(blank=True, null=True)
-    club = models.ForeignKey('Clubs', models.DO_NOTHING)
-    reply_content = models.CharField(max_length=1000, blank=True, null=True)
-    created_at = models.DateTimeField(blank=True, null=True)
-    updated_at = models.DateTimeField(blank=True, null=True)
-    is_deleted = models.TextField(blank=True, null=True)  # This field type is a guess.
+# class ClubReplies(models.Model):
+#     reply_id = models.AutoField(primary_key=True)
+#     user = models.ForeignKey(AuthUser, models.DO_NOTHING, blank=True, null=True)
+#     parent_reply_id = models.IntegerField(blank=True, null=True)
+#     club = models.ForeignKey('Clubs', models.DO_NOTHING)
+#     reply_content = models.CharField(max_length=1000, blank=True, null=True)
+#     created_at = models.DateTimeField(blank=True, null=True)
+#     updated_at = models.DateTimeField(blank=True, null=True)
+#     is_deleted = models.TextField(blank=True, null=True)  # This field type is a guess.
 
-    class Meta:
-        managed = False
-        db_table = 'club_replies'
+#     class Meta:
+#         managed = False
+#         db_table = 'club_replies'
 
 
 class ClubTypes(models.Model):
@@ -423,4 +420,3 @@ def create_addtional_auth_user_info(sender, instance, created, **kwargs):
     if created:
         UsersAdditionalInfo.objects.create(user_info=instance)
  
->>>>>>> develop
