@@ -1,8 +1,5 @@
-<<<<<<< HEAD
-=======
 
 from django.db import models
-from django.conf import settings
 from django.contrib.auth.models import User
 from django.db.models import signals
 from django.dispatch import receiver
@@ -258,8 +255,8 @@ class Hashtags(models.Model):
 
 class Messages(models.Model):
     message_id = models.AutoField(primary_key=True)
-    send_user = models.ForeignKey(User, models.DO_NOTHING, related_name="sender")
-    receive_user = models.ForeignKey(User, models.DO_NOTHING, related_name="receiver")
+    send_user = models.ForeignKey(User, models.DO_NOTHING)
+    receive_user = models.ForeignKey(User, models.DO_NOTHING)
     message_content = models.CharField(max_length=1000)
     read_at = models.DateTimeField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -292,8 +289,9 @@ class Posts(models.Model):
     user = models.ForeignKey(User, models.DO_NOTHING)
     is_deleted = models.IntegerField()
     category = models.ForeignKey(Categories, models.DO_NOTHING, blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
-    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    is_notice = models.IntegerField()
     club = models.ForeignKey(Clubs, models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
@@ -423,4 +421,3 @@ def create_addtional_auth_user_info(sender, instance, created, **kwargs):
     if created:
         UsersAdditionalInfo.objects.create(user_info=instance)
  
->>>>>>> develop
