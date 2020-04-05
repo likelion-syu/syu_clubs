@@ -1,11 +1,8 @@
-# This is an auto-generated Django model module.
-# You'll have to do the following manually to clean this up:
-#   * Rearrange models' order
-#   * Make sure each model has one field with primary_key=True
-#   * Make sure each ForeignKey has `on_delete` set to the desired behavior.
-#   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
-# Feel free to rename the models, but don't rename db_table values or field names.
+
 from django.db import models
+from django.contrib.auth.models import User
+from django.db.models import signals
+from django.dispatch import receiver
 
 
 class AccountEmailaddress(models.Model):
@@ -99,7 +96,7 @@ class AuthUserUserPermissions(models.Model):
 class AuthtokenToken(models.Model):
     key = models.CharField(primary_key=True, max_length=40)
     created = models.DateTimeField()
-    user = models.ForeignKey(AuthUser, models.DO_NOTHING, unique=True)
+    user = models.OneToOneField(AuthUser, models.DO_NOTHING)
 
     class Meta:
         managed = False
@@ -119,6 +116,21 @@ class Categories(models.Model):
         db_table = 'categories'
 
 
+class ClubAsksClubreplies(models.Model):
+    reply_id = models.AutoField(primary_key=True)
+    reply_content = models.CharField(max_length=1000, blank=True, null=True)
+    created_at = models.DateTimeField(blank=True, null=True)
+    updated_at = models.DateTimeField(blank=True, null=True)
+    is_deleted = models.IntegerField()
+    club = models.ForeignKey('Clubs', models.DO_NOTHING)
+    parent_reply = models.ForeignKey('self', models.DO_NOTHING, blank=True, null=True)
+    user = models.ForeignKey(AuthUser, models.DO_NOTHING)
+
+    class Meta:
+        managed = False
+        db_table = 'club_asks_clubreplies'
+
+
 class ClubEvents(models.Model):
     club_event_id = models.AutoField(primary_key=True)
     club_event_name = models.CharField(max_length=100, blank=True, null=True)
@@ -132,12 +144,27 @@ class ClubEvents(models.Model):
         db_table = 'club_events'
 
 
+class ClubReplies(models.Model):
+    reply_id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(AuthUser, models.DO_NOTHING, blank=True, null=True)
+    parent_reply_id = models.IntegerField(blank=True, null=True)
+    club = models.ForeignKey('Clubs', models.DO_NOTHING)
+    reply_content = models.CharField(max_length=1000, blank=True, null=True)
+    created_at = models.DateTimeField(blank=True, null=True)
+    updated_at = models.DateTimeField(blank=True, null=True)
+    is_deleted = models.TextField(blank=True, null=True)  # This field type is a guess.
+
+    class Meta:
+        managed = False
+        db_table = 'club_replies'
+
+
 class ClubTypes(models.Model):
     club_type_id = models.AutoField(primary_key=True)
     club_type_name = models.CharField(max_length=45, blank=True, null=True)
     club_type_desc = models.CharField(max_length=200, blank=True, null=True)
-    created_at = models.DateTimeField(blank=True, null=True)
-    updated_at = models.DateTimeField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         managed = False
@@ -149,10 +176,10 @@ class Clubs(models.Model):
     club_name = models.CharField(max_length=200)
     club_introduce = models.CharField(max_length=200)
     club_desc = models.CharField(max_length=3000)
-    user = models.ForeignKey(AuthUser, models.DO_NOTHING)
+    user = models.ForeignKey(User, models.DO_NOTHING)
     club_img_url = models.CharField(max_length=500, blank=True, null=True)
-    created_at = models.DateTimeField(blank=True, null=True)
-    updated_at = models.DateTimeField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     is_central = models.IntegerField()
     is_united = models.IntegerField()
     club_type = models.ForeignKey(ClubTypes, models.DO_NOTHING)
@@ -218,12 +245,26 @@ class DjangoSite(models.Model):
 class Hashtags(models.Model):
     hashtag_id = models.AutoField(primary_key=True)
     hashtag_content = models.CharField(max_length=45, blank=True, null=True)
-    created_at = models.DateTimeField(blank=True, null=True)
-    updated_at = models.DateTimeField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         managed = False
         db_table = 'hashtags'
+
+
+class Messages(models.Model):
+    message_id = models.AutoField(primary_key=True)
+    send_user = models.ForeignKey(User, models.DO_NOTHING)
+    receive_user = models.ForeignKey(User, models.DO_NOTHING)
+    message_content = models.CharField(max_length=1000)
+    read_at = models.DateTimeField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        managed = False
+        db_table = 'messages'
 
 
 class Notifications(models.Model):
@@ -232,8 +273,8 @@ class Notifications(models.Model):
     notification_content = models.CharField(max_length=1000)
     notification_type_id = models.IntegerField()
     read_at = models.DateTimeField(blank=True, null=True)
-    created_at = models.DateTimeField()
-    updated_at = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         managed = False
@@ -245,11 +286,11 @@ class Posts(models.Model):
     post_title = models.CharField(max_length=150)
     post_content = models.CharField(max_length=3000)
     post_title_img_url = models.CharField(max_length=1000, blank=True, null=True)
-    user = models.ForeignKey(AuthUser, models.DO_NOTHING)
+    user = models.ForeignKey(User, models.DO_NOTHING)
     is_deleted = models.IntegerField()
     category = models.ForeignKey(Categories, models.DO_NOTHING, blank=True, null=True)
-    created_at = models.DateTimeField(blank=True, null=True)
-    updated_at = models.DateTimeField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     is_notice = models.IntegerField()
     club = models.ForeignKey(Clubs, models.DO_NOTHING, blank=True, null=True)
 
@@ -258,11 +299,23 @@ class Posts(models.Model):
         db_table = 'posts'
 
 
+class QuestionsQuestions(models.Model):
+    title = models.CharField(max_length=30)
+    body = models.TextField()
+    created_at = models.DateTimeField(blank=True, null=True)
+    author = models.ForeignKey(User, models.DO_NOTHING)
+    club = models.ForeignKey(Clubs, models.DO_NOTHING)
+
+    class Meta:
+        managed = False
+        db_table = 'questions_questions'
+
+
 class RelClubHashtags(models.Model):
     club = models.ForeignKey(Clubs, models.DO_NOTHING)
     hashtag = models.ForeignKey(Hashtags, models.DO_NOTHING)
-    created_at = models.DateTimeField(blank=True, null=True)
-    updated_at = models.DateTimeField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         managed = False
@@ -272,9 +325,9 @@ class RelClubHashtags(models.Model):
 class RelInterestClubs(models.Model):
     intrest_club_id = models.AutoField(primary_key=True)
     club = models.ForeignKey(Clubs, models.DO_NOTHING, blank=True, null=True)
-    user = models.ForeignKey(AuthUser, models.DO_NOTHING, blank=True, null=True)
-    created_at = models.DateTimeField(blank=True, null=True)
-    updated_at = models.DateTimeField(blank=True, null=True)
+    user = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         managed = False
@@ -283,12 +336,12 @@ class RelInterestClubs(models.Model):
 
 class Replies(models.Model):
     reply_id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(AuthUser, models.DO_NOTHING, blank=True, null=True)
+    user = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True)
     parent_reply = models.ForeignKey('self', models.DO_NOTHING, blank=True, null=True)
     post = models.ForeignKey(Posts, models.DO_NOTHING)
     reply_content = models.CharField(max_length=1000, blank=True, null=True)
-    created_at = models.DateTimeField(blank=True, null=True)
-    updated_at = models.DateTimeField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     is_deleted = models.IntegerField()
 
     class Meta:
@@ -346,13 +399,25 @@ class SocialaccountSocialtoken(models.Model):
 
 
 class UsersAdditionalInfo(models.Model):
-    user_info = models.ForeignKey(AuthUser, models.DO_NOTHING, primary_key=True)
+    user_info = models.OneToOneField(User, models.DO_NOTHING, primary_key=True)
     token_kakao = models.CharField(max_length=100, blank=True, null=True)
     token_google = models.CharField(max_length=150, blank=True, null=True)
-    created_at = models.DateTimeField(blank=True, null=True)
-    updated_at = models.DateTimeField(blank=True, null=True)
-    is_verfied = models.TextField()  # This field type is a guess.
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    is_verfied = models.IntegerField()
 
     class Meta:
         managed = False
         db_table = 'users_additional_info'
+
+@receiver(signals.post_save, sender=User)
+def create_addtional_user_info(sender, instance, created, **kwargs):
+    if created:
+        UsersAdditionalInfo.objects.create(user_info=instance)
+ 
+# signals.post_save.connect(create_addtional_user_info, sender=AuthUser, weak=False, dispatch_uid='create_addtional_user_info') 
+@receiver(signals.post_save, sender=AuthUser)
+def create_addtional_auth_user_info(sender, instance, created, **kwargs):
+    if created:
+        UsersAdditionalInfo.objects.create(user_info=instance)
+ 

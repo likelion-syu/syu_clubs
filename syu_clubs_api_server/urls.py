@@ -39,9 +39,8 @@ urlpatterns = [
     path('api/club-ask/', include('club_asks.urls')),
 
     path('api/users/', include('user.urls')),
-    path('api/events/',include('events.urls'))
-
+    path('accounts/', include('allauth.urls')),
 ]
 
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
