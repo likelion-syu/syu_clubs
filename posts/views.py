@@ -5,32 +5,49 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 #from common import models
 from common.models import Posts
-from .serializers import PostSerializer
-from rest_framework.decorators import api_view
+from .serializers import PostSerializer,  PostDetailSerializer, addPost
 from rest_framework import status
 from rest_framework import filters
 #동아리별 활동 목록
 class PostsViewSet(APIView):
     def get(self, request, format=None):
         #qs = self.queryset.filter(is_deleted=0).order_by('-date')[0:7]
-        qs = Posts.objects.all()
+        qs = Posts.objects.all() #나중에 is_deleted = 0 필터 넣어야함
         serializer = PostSerializer(qs, many=True)
-        return Response(serializer.data)
-    
-    
+        print("실행중")
+        return Response(serializer.data) 
+    def post(self, request, format=None):
+        serializer = addPost(data=request.data)
+        if serializer.is_valid():  
+            serializer.save()    
+            print("실행중")   
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+# class PostWrite(APIView):
+#     def post(self, request, format=None):
+#         serializer = addPost(data=request.data)
+#         if serializer.is_valid():  
+#             serializer.save()       
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#공지등록포스트목록
+class NoticedPosts(APIView):
+    def get(self, request, format=None):
+        qs = Posts.objects.filter(is_notice=1)  #나중에 is_deleted = 0 필터 넣어야함
+        serializer = PostSerializer(qs, many=True)
+        return Response(serializer.data) 
+
 #동아리별 활동,공지 상세페이지
 class PostDetailViewSet(APIView):
     # 매개변수를 post_id라고 해야하는지 잘 모르겠음
     def get(self, request, post_id, format=None):
         queryset = Posts.objects.get(post_id=post_id)
-        serializer = PostSerializer(queryset, many=False)
-        # filter_backends = (filters.DjangoFilterBackend,)    
-        # filter_fields = ('post_id',)
+        serializer = PostDetailSerializer(queryset, many=False)
         return Response(serializer.data)
 
     def put(self, request, post_id, format=None):
         qs = Posts.objects.get(post_id=post_id)
-        serializer = PostSerializer(qs, data=request.data)
+        serializer = PostDetailSerializer(qs, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -39,8 +56,11 @@ class PostDetailViewSet(APIView):
     def delete(self, request, post_id, format=None):
         qs = Posts.objects.get(post_id=post_id)
         if request.user == qs.user:
-            post.delete()
-    return Response("삭제완료")
+            serializer = PostDetailSerializer(qs, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+            return Response(serializer.data)
+        return Response("삭제완료")
     # def perform_create(self, serializer):
     #     serializer.save(user=self.request.user)
 #글 수정기능
@@ -63,7 +83,7 @@ class PostDetailViewSet(APIView):
 #공지목록
 # class NoticeViewSet(APIView):
 #     def get(self, request, id, format=None):
-#         queryset = Posts.objects.filter(is_noticed=1)
+#         queryset = Posts.objects.filter(is_notice=1)
 #         serializer = PostSerializer(queryset, many=True)
 #         return Response(serializer.data)
 # #댓글
@@ -98,3 +118,4 @@ class PostDetailViewSet(APIView):
 
 #     def get_queryset(self):
 #         queryset = Comment.objects.filter(parent=None)
+
