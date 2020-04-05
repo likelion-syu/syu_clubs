@@ -5,9 +5,9 @@ from common import models
 from . import serializers
 # Create your views here.
 
-
-class Clubs_listViewset(viewsets.ModelViewSet):
-    queryset = models.Clubs.objects.all()
-    serializer_class = serializers.Club_listSerializer
+class Club_eventViewset(viewsets.ModelViewSet):
+    queryset = models.ClubEvents.objects.all()
+    serializer_class = serializers.serializers_event.Club_eventSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['club_name', 'club_type']
+    filterset_fields = ['club']
+   

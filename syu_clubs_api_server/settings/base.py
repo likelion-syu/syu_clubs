@@ -66,19 +66,14 @@ INSTALLED_APPS = [
     'common',
     'interest_club',
     'club_asks',
-    'clubs_list',
-    'club_event',
 
     'rest_framework',
     'corsheaders',
     'django_filters',
 
-    'rest_auth',
     'rest_framework.authtoken',
     'django.contrib.sites',
-    'allauth',
-    'allauth.account',
-    'rest_auth.registration',
+
 ]
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
