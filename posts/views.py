@@ -2,11 +2,14 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework import viewsets
 from rest_framework.views import APIView
+from rest_framework.generics import ListCreateAPIView
 from rest_framework.response import Response
 
 #from common import models
 from common.models import Posts
 from .serializers import PostSerializer
+from .serializers import ReplySerializer
+from common.models import Replies
 
 from rest_framework import status
 from rest_framework import filters
@@ -16,6 +19,7 @@ class PostsViewSet(APIView):
         #qs = self.queryset.filter(is_deleted=0).order_by('-date')[0:7]
         qs = Posts.objects.all()
         serializer = PostSerializer(qs, many=True)
+
         return Response(serializer.data)
     
     
@@ -41,6 +45,13 @@ class PostDetailViewSet(APIView):
         post = Posts.objects.get(post_id=post_id)
         post.delete()
         return Response("삭제완료")
+
+class ReplyList(ListCreateAPIView):
+    serializer_class = ReplySerializer
+    queryset = Replies.objects.filter(parent_reply=None)
+
+    # def get_queryset(self):
+    #     queryset = Replies.objects.all()
     # def perform_create(self, serializer):
     #     serializer.save(user=self.request.user)
 #글 수정기능

@@ -25,3 +25,22 @@ class PostSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = models.Posts
 		fields = '__all__'
+
+
+class RecursiveSerializer(serializers.Serializer):
+	def to_representation(self, instance):
+		serializer = self.parent_reply.parent_reply.__class__(instance, context = self.context)
+		return serializer.data
+
+class ReplySerializer(serializers.ModelSerializer):
+	reply= serializers.SerializerMethodField()
+
+	class Meta:
+		model = models.Replies
+		fields = '__all__'
+
+	def get_reply(self, instance):
+		serializer = self.__class__(instance.reply, many=True)
+		serializer.bind('',self)
+		return serializer.data
+
