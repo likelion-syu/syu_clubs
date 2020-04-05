@@ -123,7 +123,7 @@ class ClubAsksClubreplies(models.Model):
     created_at = models.DateTimeField(blank=True, null=True)
     updated_at = models.DateTimeField(blank=True, null=True)
     is_deleted = models.IntegerField()
-    club = models.ForeignKey('Clubs', models.DO_NOTHING)
+    club = models.ForeignKey('Clubs', models.DO_NOTHING, related_name='rel_club')
     parent_reply = models.ForeignKey('self', models.DO_NOTHING, blank=True, null=True)
     user = models.ForeignKey(AuthUser, models.DO_NOTHING)
 
@@ -149,7 +149,7 @@ class ClubReplies(models.Model):
     reply_id = models.AutoField(primary_key=True)
     user = models.ForeignKey(AuthUser, models.DO_NOTHING, blank=True, null=True)
     parent_reply_id = models.IntegerField(blank=True, null=True)
-    club = models.ForeignKey('Clubs', models.DO_NOTHING)
+    club = models.ForeignKey('Clubs', models.DO_NOTHING, related_name='reply_clubs')
     reply_content = models.CharField(max_length=1000, blank=True, null=True)
     created_at = models.DateTimeField(blank=True, null=True)
     updated_at = models.DateTimeField(blank=True, null=True)
@@ -337,7 +337,7 @@ class RelInterestClubs(models.Model):
 class Replies(models.Model):
     reply_id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True)
-    parent_reply = models.ForeignKey('self', models.DO_NOTHING, blank=True, null=True)
+    parent_reply = models.ForeignKey('self', on_delete=models.CASCADE, blank=True, null=True, related_name='reply')
     post = models.ForeignKey(Posts, models.DO_NOTHING)
     reply_content = models.CharField(max_length=1000, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
