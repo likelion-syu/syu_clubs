@@ -12,5 +12,4 @@ urlpatterns = [
     path('', include(router.urls)),
     url(r'^api/posts/$', views.PostsViewSet.as_view(), name="post"),
     url(r'^api/posts/(?P<post_id>\d+)/$', views.PostDetailViewSet.as_view(), name="postdetail"),
-    path('reply', views.ReplyList.as_view(), name="reply_list"),
 ]

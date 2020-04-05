@@ -67,8 +67,7 @@ INSTALLED_APPS = [
     'common',
     'interest_club',
     'club_asks',
-    'clubs_list',
-    'club_event',
+    'events',
 
     'rest_framework',
     'rest_framework.authtoken',
@@ -127,7 +126,7 @@ ROOT_URLCONF = 'syu_clubs_api_server.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        # 템플릿 위ㅇ를 client 폴더로 고정 
+        # 템플릿 위치를 client 폴더로 고정 
         'DIRS': ['client'],
         'APP_DIRS': True,
         'OPTIONS': {
