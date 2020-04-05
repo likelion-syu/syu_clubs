@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework import viewsets, generics
+from rest_framework import viewsets
 from django_filters.rest_framework import DjangoFilterBackend
 from common import models
 from ..serializers import serializers_fav

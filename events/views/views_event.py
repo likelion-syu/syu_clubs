@@ -8,5 +8,3 @@ from ..serializers import serializers_event
 class eventViewset(viewsets.ModelViewSet):
     serializer_class = serializers_event.Club_eventSerializer
     queryset = models.ClubEvents.objects.all()
-
-   
