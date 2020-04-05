@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     'common',
     'interest_club',
     'club_asks',
+    'events',
 
     'rest_framework',
     'corsheaders',

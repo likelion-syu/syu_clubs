@@ -39,6 +39,7 @@ urlpatterns = [
     path('api/club-ask/', include('club_asks.urls')),
 
     path('api/users/', include('user.urls')),
+    path('api/events/',include('events.urls'))
 
 ]
 
