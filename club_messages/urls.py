@@ -9,6 +9,6 @@ router.register('', views.MessageViewset)
 
 urlpatterns = [
     path('', include(router.urls)),
-    url(r'^api/messages/$', views.MessageViewset.as_view(), name='message'),
-    url(r'^api/messages/(?P<receive_user>\d+)/$', views.MessageDetailViewset.as_view(), name='messagedetail'),
+    url(r'^api/messages/$', views.MessageViewset, name='message'),
+    url(r'^/detail/(?P<send_user>\d+)/$', views.MessageDetailViewset.as_view(), name='messagedetail'),
 ]
