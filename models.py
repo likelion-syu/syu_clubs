@@ -1,6 +1,5 @@
 
 from django.db import models
-from django.conf import settings
 from django.contrib.auth.models import User
 from django.db.models import signals
 from django.dispatch import receiver
@@ -123,7 +122,7 @@ class ClubAsksClubreplies(models.Model):
     created_at = models.DateTimeField(blank=True, null=True)
     updated_at = models.DateTimeField(blank=True, null=True)
     is_deleted = models.IntegerField()
-    club = models.ForeignKey('Clubs', models.DO_NOTHING, related_name='rel_club')
+    club = models.ForeignKey('Clubs', models.DO_NOTHING)
     parent_reply = models.ForeignKey('self', models.DO_NOTHING, blank=True, null=True)
     user = models.ForeignKey(AuthUser, models.DO_NOTHING)
 
@@ -149,7 +148,7 @@ class ClubReplies(models.Model):
     reply_id = models.AutoField(primary_key=True)
     user = models.ForeignKey(AuthUser, models.DO_NOTHING, blank=True, null=True)
     parent_reply_id = models.IntegerField(blank=True, null=True)
-    club = models.ForeignKey('Clubs', models.DO_NOTHING, related_name='reply_clubs')
+    club = models.ForeignKey('Clubs', models.DO_NOTHING)
     reply_content = models.CharField(max_length=1000, blank=True, null=True)
     created_at = models.DateTimeField(blank=True, null=True)
     updated_at = models.DateTimeField(blank=True, null=True)
@@ -256,8 +255,8 @@ class Hashtags(models.Model):
 
 class Messages(models.Model):
     message_id = models.AutoField(primary_key=True)
-    send_user = models.ForeignKey(User, models.DO_NOTHING, related_name="sender")
-    receive_user = models.ForeignKey(User, models.DO_NOTHING, related_name="receiver")
+    send_user = models.ForeignKey(User, models.DO_NOTHING)
+    receive_user = models.ForeignKey(User, models.DO_NOTHING)
     message_content = models.CharField(max_length=1000)
     read_at = models.DateTimeField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -290,8 +289,9 @@ class Posts(models.Model):
     user = models.ForeignKey(User, models.DO_NOTHING)
     is_deleted = models.IntegerField()
     category = models.ForeignKey(Categories, models.DO_NOTHING, blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
-    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    is_notice = models.IntegerField()
     club = models.ForeignKey(Clubs, models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
@@ -337,7 +337,7 @@ class RelInterestClubs(models.Model):
 class Replies(models.Model):
     reply_id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, models.DO_NOTHING, blank=True, null=True)
-    parent_reply = models.ForeignKey('self', on_delete=models.CASCADE, blank=True, null=True, related_name='reply')
+    parent_reply = models.ForeignKey('self', models.DO_NOTHING, blank=True, null=True)
     post = models.ForeignKey(Posts, models.DO_NOTHING)
     reply_content = models.CharField(max_length=1000, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
