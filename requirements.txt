@@ -44,9 +44,6 @@ rsa==4.0
 six==1.14.0
 sqlparse==0.3.1
 urllib3==1.25.8
-<<<<<<< HEAD
 virtualenv==20.0.13
 wrapt==1.11.2
-=======
->>>>>>> d2d98640d544981123eee6fcacd62bc0197010ed
 whitenoise==5.0.1
