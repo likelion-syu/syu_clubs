@@ -58,5 +58,7 @@ class PostDetailViewSet(APIView):
             print("함수")
         return Response("삭제완료")
 
+#원격 브랜치가 만들어지는지 보려고 일부러 수정중입니다 흑흑
+#프로젝트가 끝나면 전과할거심..
 
 
