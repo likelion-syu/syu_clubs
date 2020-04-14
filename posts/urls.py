@@ -14,7 +14,6 @@ urlpatterns = [
     #동아리 공지 목록
     path('notice', views.NoticedPosts.as_view()),
     # 127.0.0.1:8000/post/<pk> == DetailView
-    path('<int:post_id>/', views.PostDetailViewSet.as_view(),name='post_detail'), 
+    path('detail/<int:post_id>/', views.PostDetailViewSet.as_view(),name='post_detail'), 
     # url(r'^', views.PostsViewSet.as_view(), name="post"),
-    # path('write/', views.PostWrite.as_view(),name='add_post'), 
 ]
