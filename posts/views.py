@@ -55,9 +55,8 @@ class PostDetailViewSet(APIView):
         qs = Posts.objects.get(post_id=post_id)
         serializer = PostDetailSerializer(qs, many=False)
         qs.is_deleted = 1
-        print("함수")
+        qs.save()
         return Response("삭제완료")
-
 
 
 

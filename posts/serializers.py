@@ -13,7 +13,7 @@ class UserSerializer(serializers.ModelSerializer):
 class PostSerializer(serializers.ModelSerializer):
     updated_at = serializers.ReadOnlyField()
     is_notice = serializers.IntegerField(write_only = True)
-    # is_deleted = serializers.IntegerField(write_only = False) #나중에 True로 바꿔줘야함
+    is_deleted = serializers.IntegerField(write_only = False) #나중에 True로 바꿔줘야함
     club = serializers.ReadOnlyField(source='Clubs.club_name')# 이게 맞는건지 확인
     class Meta:
         model = models.Posts
@@ -31,7 +31,7 @@ class PostDetailSerializer(serializers.ModelSerializer):
 	updated_at = serializers.ReadOnlyField()
 	user = serializers.ReadOnlyField(source='user.username')
 	is_notice = serializers.IntegerField(write_only = True)
-	is_deleted = serializers.IntegerField(write_only = True)
+	is_deleted = serializers.IntegerField()
 	
 	# user = serializers.CharField(source='user.username')
 	class Meta:
