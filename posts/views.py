@@ -3,7 +3,9 @@ from rest_framework.response import Response
 from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
+#권한설정
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from config.permission import IsAdminUserOrReadOnly, IsOwnerOrReadOnly
 #from common import models
 from common.models import Posts
 from .serializers import PostSerializer,PostDetailSerializer, addPost
@@ -52,7 +54,7 @@ class PostDetailViewSet(APIView):
         qs = Posts.objects.get(post_id=post_id)
         if request.user == qs.user:
             serializer = PostDetailSerializer(qs, many=False)
-            qs.is_deleted = True
+            qs.is_deleted = 1
             print("함수")
         return Response("삭제완료")
 
