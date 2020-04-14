@@ -5,8 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 #권한설정
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
-from config.permission import IsAdminUserOrReadOnly, IsOwnerOrReadOnly
-#from common import models
+from .permission import IsAdminUserOrReadOnly, IsOwnerOrReadOnly
 from common.models import Posts
 from .serializers import PostSerializer,PostDetailSerializer, addPost
 from rest_framework import status
@@ -15,6 +14,7 @@ from django.http import Http404
 
 #동아리별 활동 목록
 class PostsViewSet(APIView):
+    permission_classes = (IsAuthenticatedOrReadOnly,)#어떤사람만 글쓰기가 가능한지 모르겠음.
     def get(self, request, format=None):
         #qs = self.queryset.filter(is_deleted=0).order_by('-date')[0:7]
         qs = Posts.objects.all() #나중에 is_deleted = 0 필터 넣어야함
@@ -36,6 +36,7 @@ class NoticedPosts(APIView):
 
 #동아리별 활동,공지 상세페이지
 class PostDetailViewSet(APIView):
+    permission_classes = (IsOwnerOrReadOnly,)
     # 매개변수를 post_id라고 해야하는지 잘 모르겠음
     def get(self, request, post_id, format=None):
         queryset = Posts.objects.get(post_id=post_id)
@@ -52,13 +53,11 @@ class PostDetailViewSet(APIView):
 
     def delete(self, request, post_id, format=None):
         qs = Posts.objects.get(post_id=post_id)
-        if request.user == qs.user:
-            serializer = PostDetailSerializer(qs, many=False)
-            qs.is_deleted = 1
-            print("함수")
+        serializer = PostDetailSerializer(qs, many=False)
+        qs.is_deleted = 1
+        print("함수")
         return Response("삭제완료")
 
-#원격 브랜치가 만들어지는지 보려고 일부러 수정중입니다 흑흑
-#프로젝트가 끝나면 전과할거심..
+
 
 
