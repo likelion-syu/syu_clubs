@@ -1,45 +1,65 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from rest_framework.response import Response
 from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
-
 #from common import models
 from common.models import Posts
-from .serializers import PostSerializer
-
+from .serializers import PostSerializer,  PostDetailSerializer, addPost
 from rest_framework import status
 from rest_framework import filters
 #동아리별 활동 목록
 class PostsViewSet(APIView):
     def get(self, request, format=None):
         #qs = self.queryset.filter(is_deleted=0).order_by('-date')[0:7]
-        qs = Posts.objects.all()
+        qs = Posts.objects.all() #나중에 is_deleted = 0 필터 넣어야함
         serializer = PostSerializer(qs, many=True)
-        return Response(serializer.data)
-    
-    
-#동아리별 활동 상세페이지
+        print("실행중")
+        return Response(serializer.data) 
+    def post(self, request, format=None):
+        serializer = addPost(data=request.data)
+        if serializer.is_valid():  
+            serializer.save()    
+            print("실행중")   
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+# class PostWrite(APIView):
+#     def post(self, request, format=None):
+#         serializer = addPost(data=request.data)
+#         if serializer.is_valid():  
+#             serializer.save()       
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#공지등록포스트목록
+class NoticedPosts(APIView):
+    def get(self, request, format=None):
+        qs = Posts.objects.filter(is_notice=1)  #나중에 is_deleted = 0 필터 넣어야함
+        serializer = PostSerializer(qs, many=True)
+        return Response(serializer.data) 
+
+#동아리별 활동,공지 상세페이지
 class PostDetailViewSet(APIView):
-    # post_id라고 해야하는지 잘 모르겠음
+    # 매개변수를 post_id라고 해야하는지 잘 모르겠음
     def get(self, request, post_id, format=None):
         queryset = Posts.objects.get(post_id=post_id)
-        serializer = PostSerializer(queryset, many=False)
-        # filter_backends = (filters.DjangoFilterBackend,)    
-        # filter_fields = ('post_id',)
+        serializer = PostDetailSerializer(queryset, many=False)
         return Response(serializer.data)
 
     def put(self, request, post_id, format=None):
         qs = Posts.objects.get(post_id=post_id)
-        serializer = PostSerializer(qs, data=request.data)
+        serializer = PostDetailSerializer(qs, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response("수정할 수 없습니다.")
 
     def delete(self, request, post_id, format=None):
-        post = Posts.objects.get(post_id=post_id)
-        post.delete()
+        qs = Posts.objects.get(post_id=post_id)
+        if request.user == qs.user:
+            serializer = PostDetailSerializer(qs, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+            return Response(serializer.data)
         return Response("삭제완료")
     # def perform_create(self, serializer):
     #     serializer.save(user=self.request.user)
@@ -61,8 +81,41 @@ class PostDetailViewSet(APIView):
 #         post.save()
 #         return Response("Post edited")
 #공지목록
-class NoticeViewSet(APIView):
-    def get(self, request, id, format=None):
-        queryset = Posts.objects.filter(is_noticed=id)
-        serializer = PostSerializer(queryset, many=True)
-        return Response(serializer.data)
+# class NoticeViewSet(APIView):
+#     def get(self, request, id, format=None):
+#         queryset = Posts.objects.filter(is_notice=1)
+#         serializer = PostSerializer(queryset, many=True)
+#         return Response(serializer.data)
+# #댓글
+# @api_view(['GET'])
+# def comment_list(request):
+#     comments = Comment.objects.all()
+#     serializer = CommentSerializer(comments, many=True)
+#     return Response(serializer.data)
+
+# @api_view(['POST'])
+# def comments_create(request, music_pk):
+#     print(request.data)
+#     serializer = CommentSerializer(data=request.data)
+#     if serializer.is_valid(raise_exception=True):
+#         serializer.save(music_id=music_pk)
+#     return Response(serializer.data)
+
+# @api_view(['PUT', 'DELETE'])
+# def comments_update_and_delete(request, reply_id):
+#     comment = get_object_or_404(Comment, pk=reply_id)
+#     if request.method == 'PUT':
+#         serializer = CommentSerializer(data=request.data, instance=comment)
+#         if serializer.is_valid(raise_exception=True):
+#             serializer.save()
+#             return Response(serializer.data) #  Response({'message': 'Comment has been updated.'})
+#     else:
+#         comment.delete()
+#         return Response({'message':'Comment has been deleted.'})
+
+# class CommentList(ListCreateAPIView):
+#     serializer_class = CommentSerializer
+
+#     def get_queryset(self):
+#         queryset = Comment.objects.filter(parent=None)
+
