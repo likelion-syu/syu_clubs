@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User, Group  
 from rest_framework import serializers
 from common import models
 from rest_framework.authtoken.models import Token
@@ -21,7 +22,6 @@ class AuthUserSerializer(serializers.ModelSerializer):
         }
 
 class InfoSerializer(serializers.ModelSerializer):
-    username = serializers.CharField
     class Meta:
         model = models.User
         fields = ['id', 'username', 'email']

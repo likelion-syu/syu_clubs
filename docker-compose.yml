@@ -8,6 +8,8 @@ services:
         restart: on-failure
         volumes:
             - ./:/app/
+        environment: 
+            - TZ=Asia/Seoul
         depends_on:
             - cloud-sql-proxy
         networks:
@@ -21,6 +23,8 @@ services:
             - ./:/app/config
         ports: 
             - 5000:5000
+        environment: 
+            - TZ=Asia/Seoul
         networks:
             syu_clubs:
                 ipv4_address: 10.10.0.2
