@@ -404,7 +404,7 @@ class UsersAdditionalInfo(models.Model):
     token_google = models.CharField(max_length=150, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    is_verfied = models.IntegerField()
+    is_verfied = models.IntegerField(default=0)
 
     class Meta:
         managed = False
@@ -416,8 +416,8 @@ def create_addtional_user_info(sender, instance, created, **kwargs):
         UsersAdditionalInfo.objects.create(user_info=instance)
  
 # signals.post_save.connect(create_addtional_user_info, sender=AuthUser, weak=False, dispatch_uid='create_addtional_user_info') 
-@receiver(signals.post_save, sender=AuthUser)
-def create_addtional_auth_user_info(sender, instance, created, **kwargs):
-    if created:
-        UsersAdditionalInfo.objects.create(user_info=instance)
+# @receiver(signals.post_save, sender=AuthUser)
+# def create_addtional_auth_user_info(sender, instance, created, **kwargs):
+#     if created:
+#         UsersAdditionalInfo.objects.create(user_info=instance)
  

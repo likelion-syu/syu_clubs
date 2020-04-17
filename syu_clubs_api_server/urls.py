@@ -31,15 +31,16 @@ urlpatterns = [
     path('api/posts/', include('posts.urls')),
     path('api/clubs/', include('clubs.urls')),
 
-    path('api-auth/', include(rest_framework.urls)), # logout dropdown
+    # path('api-auth/', include(rest_framework.urls)), # logout dropdown
 
     path('api/interest-club/', include('interest_club.urls')),
-    path('api-token-auth/', obtain_auth_token),
+    # path('api-token-auth/', obtain_auth_token),
 
     path('api/club-ask/', include('club_asks.urls')),
 
-    path('api/users/', include('user.urls')),
     path('api/club_event/', include('club_event.urls')),
+    # 유저 로그인 api
+    path('api/users/', include('user.urls')),
     path('accounts/', include('allauth.urls')),
 ]
 
