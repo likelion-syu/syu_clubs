@@ -36,7 +36,7 @@ class RegistGenericView(generics.GenericAPIView):
             }
         )
 
- # 유저 로그인 확인
+ # 유저 로그인 확인 후 유저 정보 제공
 class UserAuthAPIView(APIView):
     permission_classes=[permissions.IsAuthenticated]
     def get(self, request):
@@ -59,6 +59,3 @@ class LoginAPI(generics.GenericAPIView):
                 "token": token.key,
             }
         )
-from django.contrib.auth.models import User, Group  
-from rest_framework import viewsets  
-from user.serializers import UserSerializer

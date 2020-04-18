@@ -362,7 +362,7 @@ class SocialaccountSocialtoken(models.Model):
 
 
 class UsersAdditionalInfo(models.Model):
-    user_info = models.OneToOneField(AuthUser, models.DO_NOTHING, primary_key=True)
+    user_info = models.OneToOneField(User, models.DO_NOTHING, primary_key=True)
     token_kakao = models.CharField(max_length=100, blank=True, null=True)
     token_google = models.CharField(max_length=150, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
