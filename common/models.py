@@ -127,7 +127,7 @@ class ClubEvents(models.Model):
     club_event_id = models.AutoField(primary_key=True)
     club_event_name = models.CharField(max_length=100, blank=True, null=True)
     club_event_dt = models.DateTimeField(blank=True, null=True)
-    club = models.ForeignKey('Clubs', models.DO_NOTHING, blank=True, null=True)
+    club = models.ForeignKey('Clubs', models.DO_NOTHING, related_name="club_events")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
