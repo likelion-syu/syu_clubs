@@ -287,7 +287,7 @@ class RelClubHashtags(models.Model):
 
 class RelInterestClubs(models.Model):
     intrest_club_id = models.AutoField(primary_key=True)
-    club = models.ForeignKey(Clubs, models.DO_NOTHING, unique=True)
+    club = models.ForeignKey(Clubs, models.DO_NOTHING, related_name="rel_clubs")
     user = models.ForeignKey(User, models.DO_NOTHING)
     created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)

@@ -16,3 +16,4 @@ class ClubsViewset(viewsets.ModelViewSet):
         if search:
             qs = qs.filter(club_name=search)
         return qs   
+    
