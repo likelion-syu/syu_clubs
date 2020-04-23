@@ -4,7 +4,7 @@ from common import models
 class ClubSerializer(serializers.ModelSerializer):
 	created_at = serializers.ReadOnlyField()
 	updated_at = serializers.ReadOnlyField()
-	club_type = serializers.ReadOnlyField( source = 'club_type.club_type_id' )
+	club_type = serializers.ReadOnlyField( source = 'club_type.club_type_name' )
 	club_events = serializers.ReadOnlyField ( source = 'ClubEvents.club_event_id' )
 	Posts = serializers.ReadOnlyField( source = 'Posts.post_title')
 	class Meta:
