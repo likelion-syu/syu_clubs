@@ -14,10 +14,10 @@ from django.http import Http404
 
 #동아리별 활동 목록
 class PostsViewSet(APIView):
-    permission_classes = (IsAuthenticatedOrReadOnly,)#어떤사람만 글쓰기가 가능한지 모르겠음.
+    permission_classes = (IsAuthenticatedOrReadOnly,)#어떤사람만 글쓰기가 가능하도록 해야하는지 모르겠음.
     def get(self, request, format=None):
         #qs = self.queryset.filter(is_deleted=0).order_by('-date')[0:7]
-        qs = Posts.objects.all() #나중에 is_deleted = 0 필터 넣어야함
+        qs = Posts.objects.filter(is_deleted=0).order_by('-post_id')[0:7] 
         serializer = PostSerializer(qs, many=True)
         return Response(serializer.data) 
     def post(self, request, format=None):
@@ -30,14 +30,13 @@ class PostsViewSet(APIView):
 #공지등록포스트목록
 class NoticedPosts(APIView):
     def get(self, request, format=None):
-        qs = Posts.objects.filter(is_notice=1)  #나중에 is_deleted = 0 필터 넣어야함
+        qs = Posts.objects.filter(is_notice=1,is_deleted=0)
         serializer = PostSerializer(qs, many=True)
         return Response(serializer.data) 
 
 #동아리별 활동,공지 상세페이지
 class PostDetailViewSet(APIView):
     permission_classes = (IsOwnerOrReadOnly,)
-    # 매개변수를 post_id라고 해야하는지 잘 모르겠음
     def get(self, request, post_id, format=None):
         queryset = Posts.objects.get(post_id=post_id)
         serializer = PostDetailSerializer(queryset, many=False)

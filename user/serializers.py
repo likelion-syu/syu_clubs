@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User, Group  
 from rest_framework import serializers
 from common import models
 from rest_framework.authtoken.models import Token
@@ -14,14 +15,19 @@ class AuthUserSerializer(serializers.ModelSerializer):
     last_login = serializers.ReadOnlyField()
 
     class Meta:
-        model = models.User
+        model = User
         fields = ['date_joined', 'password', 'is_active', 'is_staff', 'is_superuser', 'username', 'email', 'last_login']
         extra_kwargs = {
         'password': {'write_only': True}
         }
 
+    def create(self, validated_data):
+        user = User.objects.create_user(
+            validated_data["username"], validated_data["email"], validated_data["password"]
+        )
+        return user
+
 class InfoSerializer(serializers.ModelSerializer):
-    username = serializers.CharField
     class Meta:
         model = models.User
         fields = ['id', 'username', 'email']

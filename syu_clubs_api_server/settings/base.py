@@ -87,11 +87,12 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
     ],
-    # 인증된 사용자만 접근 가능 // 전역설정
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-    )
+        # 인증된 사용자만 접근 가능 // 전역설정
+    # 'DEFAULT_PERMISSION_CLASSES': (
+    #     'rest_framework.permissions.IsAuthenticated',
+    # )
 }
 
 
@@ -111,7 +112,6 @@ AUTHENTICATION_BACKENDS = (
 
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -119,6 +119,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    # corsheaders 허가
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'syu_clubs_api_server.urls'
@@ -126,7 +129,7 @@ ROOT_URLCONF = 'syu_clubs_api_server.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        # 템플릿 위ㅇ를 client 폴더로 고정 
+        # 템플릿 위치를 client 폴더로 고정 
         'DIRS': ['client'],
         'APP_DIRS': True,
         'OPTIONS': {

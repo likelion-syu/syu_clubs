@@ -28,20 +28,20 @@ urlpatterns = [
     # 모든 주소를 우선 client 쪽으로 연결 시킴
     url(r'^$', TemplateView.as_view(template_name='index.html'),name='index'),
     path('admin/', admin.site.urls),
+    # 포스트 관련 url
     path('api/posts/', include('posts.urls')),
+    # 동아리 관련 url
     path('api/clubs/', include('clubs.urls')),
-
-    path('api-auth/', include(rest_framework.urls)), # logout dropdown
-
-    path('api/interest-club/', include('interest_club.urls')),
-    path('api-token-auth/', obtain_auth_token),
-
+    path('api/events/',include('events.urls')),
     path('api/club-ask/', include('club_asks.urls')),
 
-    path('api/users/', include('user.urls')),
-    path('api/club_event/', include('club_event.urls')),
-    path('accounts/', include('allauth.urls')),
-]
+    # path('api-auth/', include(rest_framework.urls)), # logout dropdown
+    # path('api-token-auth/', obtain_auth_token),
 
+    # 유저 관련 url
+    path('api/users/', include('user.urls')),
+    path('accounts/', include('allauth.urls')),
+    path('api/interest-club/', include('interest_club.urls')),
+]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

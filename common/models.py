@@ -127,7 +127,7 @@ class ClubEvents(models.Model):
     club_event_id = models.AutoField(primary_key=True)
     club_event_name = models.CharField(max_length=100, blank=True, null=True)
     club_event_dt = models.DateTimeField(blank=True, null=True)
-    club = models.ForeignKey('Clubs', models.DO_NOTHING, blank=True, null=True)
+    club = models.ForeignKey('Clubs', models.DO_NOTHING, related_name="club_events")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -362,12 +362,12 @@ class SocialaccountSocialtoken(models.Model):
 
 
 class UsersAdditionalInfo(models.Model):
-    user_info = models.OneToOneField(AuthUser, models.DO_NOTHING, primary_key=True)
+    user_info = models.OneToOneField(User, models.DO_NOTHING, primary_key=True)
     token_kakao = models.CharField(max_length=100, blank=True, null=True)
     token_google = models.CharField(max_length=150, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    is_verfied = models.IntegerField()
+    is_verfied = models.IntegerField(default=0)
 
     class Meta:
         managed = False
@@ -379,8 +379,8 @@ def create_addtional_user_info(sender, instance, created, **kwargs):
         UsersAdditionalInfo.objects.create(user_info=instance)
  
 # signals.post_save.connect(create_addtional_user_info, sender=AuthUser, weak=False, dispatch_uid='create_addtional_user_info') 
-@receiver(signals.post_save, sender=AuthUser)
-def create_addtional_auth_user_info(sender, instance, created, **kwargs):
-    if created:
-        UsersAdditionalInfo.objects.create(user_info=instance)
+# @receiver(signals.post_save, sender=AuthUser)
+# def create_addtional_auth_user_info(sender, instance, created, **kwargs):
+#     if created:
+#         UsersAdditionalInfo.objects.create(user_info=instance)
  

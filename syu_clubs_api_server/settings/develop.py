@@ -5,7 +5,12 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(PROJECT_ROOT, 'db.sqlite3'),
+#     }
+# }
 platform = platform.platform()
 if platform == "Linux-4.19.76-linuxkit-x86_64-with-glibc2.2.5":
     DATABASES = { 
@@ -39,8 +44,6 @@ STATICFILES_DIRS = [
     os.path.join(PROJECT_ROOT, 'client/static')
 ]
 
-print("[gomja] project root : ", PROJECT_ROOT)
-print("[gomja] static root : ", STATIC_ROOT)
 
 LOGIN_REDIRECT_URL = 'http://127.0.0.1:3000'
 # ACCOUNT_AUTHENTICATION_METHOD = 'email'

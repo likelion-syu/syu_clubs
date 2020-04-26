@@ -8,6 +8,8 @@ services:
         restart: on-failure
         volumes:
             - ./:/app/
+        environment: 
+            - TZ=Asia/Seoul
         depends_on:
             - cloud-sql-proxy
         networks:
@@ -16,11 +18,13 @@ services:
 
     cloud-sql-proxy:
         image: gcr.io/cloudsql-docker/gce-proxy:1.16
-        command: /cloud_sql_proxy -instances=syu-clubs:asia-northeast3:syu-clubs-db=tcp:0.0.0.0:5000 -credential_file=app/config/secure/syuClubs-secure.json
+        command: /cloud_sql_proxy -instances=splendid-light-274907:us-central1:syu-clubs-db=tcp:0.0.0.0:5000 -credential_file=app/config/secure/syuClubs-secure.json
         volumes: 
             - ./:/app/config
         ports: 
             - 5000:5000
+        environment: 
+            - TZ=Asia/Seoul
         networks:
             syu_clubs:
                 ipv4_address: 10.10.0.2
